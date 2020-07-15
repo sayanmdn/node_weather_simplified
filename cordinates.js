@@ -1,20 +1,18 @@
-const request = require('request')
+const axios = require('axios')
 
-cor = (location, callback) => {
+getCoordinate = (location) => {
 
   const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + location + '.json?access_token=pk.eyJ1Ijoic2F5YW5tZG4iLCJhIjoiY2tja2NuMHd3MHg3czJzbzJxZG8xc2hlZCJ9.wDyzXtxpLDN-wFwqmSr0ag'
 
-  request({ url: url, json: true }, (error, res) => {
-    if (error) return console.log(error)
-    console.log(JSON.stringify(res.body.features[0].place_name))
-    const data = {
-      lat: res.body.features[0].center[1],
-      lng: res.body.features[0].center[0]
+  return axios(url).then(({ data }) => {
+    console.log(JSON.stringify(data.features[0].place_name))
+    const coordinates = {
+      lat: data.features[0].center[1],
+      lng: data.features[0].center[0]
     }
-    callback(data);
-
+    return coordinates;
   })
 
 }
-module.exports.c = cor
+module.exports.getCoordinate = getCoordinate
 
